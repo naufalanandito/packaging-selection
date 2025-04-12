@@ -9,7 +9,8 @@ const data = {
     "Length part": ["Duplex", "Carton", "Bubble bag"],
     "Medium Part": ["Bubble bag"],
     "Small Part": ["Plastic"],
-    "No NG": ["No Pack"]
+    "No NG": ["No Pack"],
+    "Liquid": ["Bottle"]
   },
   "Quality": {
     "Fragile": ["Duplex", "Carton", "Bubble bag"],
