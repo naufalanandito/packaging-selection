@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Packaging Selector</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <h1>Packaging Selector</h1>
+
+  <label for="weight">Select Weight:</label>
+  <select id="weight">
+    <option value="">-- Choose Weight --</option>
+    <option value="Heavy Part > 1kg">Heavy Part > 1kg</option>
+    <option value="Medium weight 0.5-1kg">Medium weight 0.5-1kg</option>
+    <option value="Light Part < 0.5kg">Light Part < 0.5kg</option>
+  </select>
+
+  <label for="dimension">Select Dimension:</label>
+  <select id="dimension">
+    <option value="">-- Choose Dimension --</option>
+    <option value="Big part">Big part</option>
+    <option value="Length part">Length part</option>
+    <option value="Medium Part">Medium Part</option>
+    <option value="Small Part">Small Part</option>
+  </select>
+
+  <div class="result" id="result">
+    <h3>Recommended Packaging:</h3>
+    <ul id="packagingList">
+      <li>Select both weight and dimension to see options.</li>
+    </ul>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
