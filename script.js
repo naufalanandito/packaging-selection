@@ -1,8 +1,8 @@
 const data = {
   "Weight": {
     "Heavy Part > 1kg": ["Duplex", "Carton", "Bubble bag", "Bottle"],
-    "Medium weight 0.5-1kg": ["No Pack", "Duplex", "Bubble bag", "Plastic"],
-    "Light Part < 0.5kg": ["No Pack", "Duplex", "Plastic"]
+    "Medium weight 0.5-1kg": ["No Pack", "Duplex", "Bubble bag", "Plastic","Bottle"],
+    "Light Part < 0.5kg": ["No Pack", "Duplex", "Plastic","Bottle"]
   },
   "Dimention": {
     "Big part": ["Carton", "Bubble bag"],
@@ -34,7 +34,8 @@ const data = {
   "Shape": {
     "Flat": ["No Pack", "Duplex", "Carton", "Bubble bag", "Plastic"],
     "Wavy": ["No Pack", "Duplex", "Carton", "Bubble bag", "Plastic"],
-    "Sharp": ["No Pack", "Carton", "Bubble bag"]
+    "Sharp": ["No Pack", "Carton", "Bubble bag"],
+    "Liquid": ["Bottle"]
   }
 };
 
