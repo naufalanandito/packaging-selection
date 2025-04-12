@@ -1,44 +1,105 @@
-const weightOptions = {
-  "Heavy Part > 1kg": ["Duplex", "Carton", "Bubble bag", "Bottle"],
-  "Medium weight 0.5-1kg": ["No Pack", "Duplex", "Bubble bag", "Plastic"],
-  "Light Part < 0.5kg": ["No Pack", "Duplex", "Plastic"]
+const data = {
+  "Weight": {
+    "Heavy Part > 1kg": ["Duplex", "Carton", "Bubble bag", "Bottle"],
+    "Medium weight 0.5-1kg": ["No Pack", "Duplex", "Bubble bag", "Plastic"],
+    "Light Part < 0.5kg": ["No Pack", "Duplex", "Plastic"]
+  },
+  "Dimention": {
+    "Big part": ["Carton", "Bubble bag"],
+    "Length part": ["Duplex", "Carton", "Bubble bag"],
+    "Medium Part": ["Bubble bag"],
+    "Small Part": ["Plastic"],
+    "No NG": ["No Pack"]
+  },
+  "Quality": {
+    "Fragile": ["Duplex", "Carton", "Bubble bag"],
+    "Broken": ["Duplex", "Carton", "Bubble bag"],
+    "Dent": ["Duplex", "Carton", "Bubble bag"],
+    "Scratched": ["Duplex", "Carton", "Bubble bag"],
+    "Leak": ["Carton", "Bottle"],
+    "No NG": ["No Pack"]
+  },
+  "Material Part": {
+    "Steel": ["Duplex", "Carton", "Bubble bag", "Plastic"],
+    "Iron": ["Duplex", "Carton", "Bubble bag", "Plastic"],
+    "PE": ["Duplex", "Carton", "Bubble bag", "Plastic"],
+    "Alumunium": ["No Pack", "Duplex", "Carton", "Bubble bag", "Plastic"],
+    "Rubber": ["Duplex", "Plastic"],
+    "Paper": ["Plastic"],
+    "Fluid": ["Carton", "Bottle"],
+    "Electronic": ["Duplex", "Carton", "Bubble bag"],
+    "Glass": ["Carton"],
+    "Wiring": ["No Pack", "Wiring"]
+  },
+  "Shape": {
+    "Flat": ["No Pack", "Duplex", "Carton", "Bubble bag", "Plastic"],
+    "Wavy": ["No Pack", "Duplex", "Carton", "Bubble bag", "Plastic"],
+    "Sharp": ["No Pack", "Carton", "Bubble bag"]
+  }
 };
 
-const dimensionOptions = {
-  "Big part": ["Carton", "Bubble bag"],
-  "Length part": ["Duplex", "Carton", "Bubble bag"],
-  "Medium Part": ["Bubble bag"],
-  "Small Part": ["Plastic"]
-};
+const criteria = ["Weight", "Dimention", "Quality", "Material Part", "Shape"];
+const selectors = {};
 
-const weightSelect = document.getElementById("weight");
-const dimensionSelect = document.getElementById("dimension");
-const packagingList = document.getElementById("packagingList");
+function createDropdowns() {
+  const form = document.getElementById("form-area");
 
-function updatePackagingList() {
-  const weight = weightSelect.value;
-  const dimension = dimensionSelect.value;
+  criteria.forEach(key => {
+    const label = document.createElement("label");
+    label.textContent = `Select ${key}:`;
 
+    const select = document.createElement("select");
+    select.id = key;
+    select.innerHTML = `<option value="">-- Choose ${key} --</option>`;
+
+    Object.keys(data[key]).forEach(option => {
+      const opt = document.createElement("option");
+      opt.value = option;
+      opt.textContent = option;
+      select.appendChild(opt);
+    });
+
+    select.addEventListener("change", updateResult);
+    selectors[key] = select;
+
+    form.appendChild(label);
+    form.appendChild(select);
+  });
+}
+
+function updateResult() {
+  let selectedSets = [];
+
+  criteria.forEach(key => {
+    const val = selectors[key].value;
+    if (val && data[key][val]) {
+      selectedSets.push(new Set(data[key][val]));
+    }
+  });
+
+  const packagingList = document.getElementById("packagingList");
   packagingList.innerHTML = "";
 
-  if (weight && dimension) {
-    const weightPackages = weightOptions[weight] || [];
-    const dimensionPackages = dimensionOptions[dimension] || [];
-    const intersect = weightPackages.filter(pkg => dimensionPackages.includes(pkg));
+  if (selectedSets.length === 0) {
+    packagingList.innerHTML = "<li>Please select at least one criterion.</li>";
+    return;
+  }
 
-    if (intersect.length > 0) {
-      intersect.forEach(pkg => {
-        const li = document.createElement("li");
-        li.textContent = pkg;
-        packagingList.appendChild(li);
-      });
-    } else {
-      packagingList.innerHTML = "<li>No matching packaging found.</li>";
-    }
+  let intersection = [...selectedSets[0]];
+  selectedSets.slice(1).forEach(set => {
+    intersection = intersection.filter(item => set.has(item));
+  });
+
+  if (intersection.length > 0) {
+    intersection.forEach(pkg => {
+      const li = document.createElement("li");
+      li.textContent = pkg;
+      packagingList.appendChild(li);
+    });
   } else {
-    packagingList.innerHTML = "<li>Select both weight and dimension to see options.</li>";
+    packagingList.innerHTML = "<li>No matching packaging found.</li>";
   }
 }
 
-weightSelect.addEventListener("change", updatePackagingList);
-dimensionSelect.addEventListener("change", updatePackagingList);
+// Initialize dropdowns and event listeners
+document.addEventListener("DOMContentLoaded", createDropdowns);
